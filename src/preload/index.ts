@@ -8,7 +8,7 @@ if (!process.contextIsolated) {
 
 try {
   contextBridge.exposeInMainWorld('context', {
-    // TODO: Add custom APIs here
+    locale: navigator.language
   })
 } catch (error) {
   console.error(error)
