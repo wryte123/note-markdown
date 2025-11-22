@@ -8,7 +8,7 @@ export default defineConfig({
     plugins: [externalizeDepsPlugin()],
     resolve: {
       alias: {
-        '@lib': resolve('src/main/lib'),
+        '@': resolve('src/main'),
         '@shared': resolve('src/shared')
       }
     }

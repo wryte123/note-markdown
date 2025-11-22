@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 @plugin "@tailwindcss/typography";
 
 @layer base {
@@ -19,11 +19,23 @@
     @apply overflow-hidden;
   }
 
-  header{
+  header {
     -webkit-app-region: drag;
   }
 
-  button{
+  button {
     -webkit-app-region: no-drag;
+  }
+
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-[#555] rounded-md;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
   }
 }
