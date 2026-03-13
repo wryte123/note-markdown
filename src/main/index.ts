@@ -14,7 +14,7 @@ function createWindow(): void {
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     center: true,
-    title: 'Markdown writer',
+    title: 'Markdown 笔记',
     frame: false,
     vibrancy: 'under-window',
     visualEffectState: 'active',

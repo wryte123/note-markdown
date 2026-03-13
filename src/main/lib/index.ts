@@ -58,9 +58,9 @@ export const createNote: CreateNote = async () => {
   await ensureDir(rootDir)
 
   const { filePath, canceled } = await dialog.showSaveDialog({
-    title: 'New note',
-    defaultPath: `${rootDir}/untitled.md`,
-    buttonLabel: 'Create',
+    title: '新建笔记',
+    defaultPath: `${rootDir}/未命名.md`,
+    buttonLabel: '创建',
     properties: ['showOverwriteConfirmation'],
     showsTagField: false,
     filters: [{ name: 'Markdown', extensions: ['md'] }]
@@ -76,8 +76,8 @@ export const createNote: CreateNote = async () => {
   if (parentDir !== rootDir) {
     await dialog.showMessageBox({
       type: 'error',
-      title: 'Creation failed',
-      message: 'Note must be created in the app directory'
+      title: '创建失败',
+      message: '笔记必须创建在应用目录中'
     })
 
     return false
@@ -94,9 +94,9 @@ export const deleteNote: DeleteNote = async (filename) => {
 
   const { response } = await dialog.showMessageBox({
     type: 'warning',
-    title: 'Delete note',
-    message: `Are you sure you want to delete this ${filename} ?`,
-    buttons: ['Delete', 'Cancel'],
+    title: '删除笔记',
+    message: `确定要删除「${filename}」吗？`,
+    buttons: ['删除', '取消'],
     defaultId: 1,
     cancelId: 1
   })
