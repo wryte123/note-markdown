@@ -1,9 +1,11 @@
-import { app, shell, BrowserWindow, ipcMain, nativeTheme } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, nativeTheme, protocol, net } from 'electron'
 import { join } from 'path'
+import path from 'path'
+import { pathToFileURL } from 'url'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-import { createNote, deleteNote, getNotes, readNote, writeNote } from '@/lib'
-import { CreateNote, DeleteNote, GetNotes, ReadNote, WriteNote } from '@shared/types'
+import { createNote, deleteNote, getNotes, readNote, writeNote, saveImage, getRootDir } from '@/lib'
+import { CreateNote, DeleteNote, GetNotes, ReadNote, SaveImage, WriteNote } from '@shared/types'
 
 function createWindow(): void {
   // Create the browser window.
@@ -45,6 +47,11 @@ function createWindow(): void {
   }
 }
 
+// Register custom protocol scheme for loading local images
+protocol.registerSchemesAsPrivileged([
+  { scheme: 'notemark', privileges: { bypassCSP: true, supportFetchAPI: true } }
+])
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -52,6 +59,14 @@ app.whenReady().then(() => {
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
   nativeTheme.themeSource = 'dark'
+
+  // Register notemark:// protocol handler to serve local images
+  protocol.handle('notemark', (req) => {
+    const rawPath = req.url.replace(/^notemark:\/\//, '')
+    const relativePath = decodeURIComponent(rawPath).replace(/^\/+/, '')
+    const filePath = path.join(getRootDir(), relativePath)
+    return net.fetch(pathToFileURL(filePath).toString())
+  })
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
@@ -66,6 +81,7 @@ app.whenReady().then(() => {
   ipcMain.handle('writeNote', (_, ...args: Parameters<WriteNote>) => writeNote(...args))
   ipcMain.handle('createNote', (_, ...args: Parameters<CreateNote>) => createNote(...args))
   ipcMain.handle('deleteNote', (_, ...args: Parameters<DeleteNote>) => deleteNote(...args))
+  ipcMain.handle('saveImage', (_, ...args: Parameters<SaveImage>) => saveImage(...args))
   createWindow()
 
   app.on('activate', function () {

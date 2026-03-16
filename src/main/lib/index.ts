@@ -1,7 +1,7 @@
 import { fileEncoding } from '@shared/constants'
 import { appDirectoryName } from '@shared/constants'
 import { NoteInfo } from '@shared/models'
-import { CreateNote, DeleteNote, GetNotes, ReadNote, WriteNote } from '@shared/types'
+import { CreateNote, DeleteNote, GetNotes, ReadNote, SaveImage, WriteNote } from '@shared/types'
 import { dialog } from 'electron'
 import { ensureDir, readdir, readFile, remove, stat, writeFile } from 'fs-extra'
 import path from 'path'
@@ -110,4 +110,18 @@ export const deleteNote: DeleteNote = async (filename) => {
   await remove(`${rootDir}/${filename}.md`)
 
   return true
+}
+
+export const saveImage: SaveImage = async (name, data) => {
+  const imagesDir = `${getRootDir()}/images`
+
+  await ensureDir(imagesDir)
+
+  const sanitizedName = name.replace(/[^a-zA-Z0-9._-]/g, '_')
+  const uniqueFilename = `${Date.now()}-${sanitizedName}`
+  const fullPath = path.join(imagesDir, uniqueFilename)
+
+  await writeFile(fullPath, Buffer.from(data))
+
+  return `notemark://images/${uniqueFilename}`
 }

@@ -35,5 +35,11 @@ export const useMarkDownEditor = () => {
     }
   }
 
-  return { selectedNote, editorRef, handleAutoSaving, handleBlur }
+  const imageUploadHandler = async (image: File): Promise<string> => {
+    const arrayBuffer = await image.arrayBuffer()
+    const savedPath = await window.context.saveImage(image.name, arrayBuffer)
+    return savedPath
+  }
+
+  return { selectedNote, editorRef, handleAutoSaving, handleBlur, imageUploadHandler }
 }
