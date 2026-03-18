@@ -76,7 +76,11 @@ export const createNote: CreateNote = async () => {
 
   const { name: filename, dir: parentDir } = path.parse(filePath)
 
-  if (parentDir !== rootDir) {
+  // Normalize paths for comparison (handle Windows vs Unix separators)
+  const normalizedParentDir = path.normalize(parentDir).toLowerCase()
+  const normalizedRootDir = path.normalize(rootDir).toLowerCase()
+
+  if (normalizedParentDir !== normalizedRootDir) {
     await dialog.showMessageBox({
       type: 'error',
       title: '创建失败',
