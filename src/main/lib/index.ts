@@ -37,7 +37,8 @@ export const getNoteInfoFromFileName = async (fileName: string): Promise<NoteInf
 export const readNote: ReadNote = async (filename) => {
   const rootDir = getRootDir()
 
-  return readFile(`${rootDir}/${filename}.md`, {
+  const filePath = path.join(rootDir, `${filename}.md`)
+  return readFile(filePath, {
     encoding: fileEncoding
   })
 }
@@ -77,14 +78,18 @@ export const createNote: CreateNote = async () => {
   const { name: filename, dir: parentDir } = path.parse(filePath)
 
   // Normalize paths for comparison (handle Windows vs Unix separators)
-  const normalizedParentDir = path.normalize(parentDir).toLowerCase()
-  const normalizedRootDir = path.normalize(rootDir).toLowerCase()
+  const normalizedParentDir = path.normalize(parentDir).toLowerCase().replace(/\\/g, '/')
+  const normalizedRootDir = path.normalize(rootDir).toLowerCase().replace(/\\/g, '/')
+
+  console.info('Parent dir:', normalizedParentDir)
+  console.info('Root dir:', normalizedRootDir)
+  console.info('Match:', normalizedParentDir === normalizedRootDir)
 
   if (normalizedParentDir !== normalizedRootDir) {
     await dialog.showMessageBox({
       type: 'error',
       title: '创建失败',
-      message: '笔记必须创建在应用目录中'
+      message: `笔记必须创建在应用目录中\n当前: ${normalizedParentDir}\n期望: ${normalizedRootDir}`
     })
 
     return false
