@@ -8,6 +8,7 @@ import { createNote, deleteNote, getNotes, readNote, writeNote, saveImage, getRo
 import { CreateNote, DeleteNote, GetNotes, ReadNote, SaveImage, WriteNote } from '@shared/types'
 
 function createWindow(): void {
+  const isMac = process.platform === 'darwin'
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 900,
@@ -17,11 +18,18 @@ function createWindow(): void {
     ...(process.platform === 'linux' ? { icon } : {}),
     center: true,
     title: 'Markdown 笔记',
-    frame: false,
-    vibrancy: 'under-window',
-    visualEffectState: 'active',
-    titleBarStyle: 'hidden',
-    trafficLightPosition: { x: 15, y: 10 },
+    // macOS: hidden title bar with traffic lights; Windows/Linux: show frame with controls
+    ...(isMac
+      ? {
+          frame: false,
+          vibrancy: 'under-window',
+          visualEffectState: 'active',
+          titleBarStyle: 'hidden',
+          trafficLightPosition: { x: 15, y: 10 }
+        }
+      : {
+          frame: true
+        }),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: true,

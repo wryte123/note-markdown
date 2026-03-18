@@ -47,7 +47,10 @@ export const writeNote: WriteNote = async (filename, content) => {
 
   console.info(`Writing in ${filename}`)
 
-  return writeFile(`${rootDir}/${filename}.md`, content, {
+  const filePath = path.join(rootDir, `${filename}.md`)
+  await ensureDir(path.dirname(filePath))
+
+  return writeFile(filePath, content, {
     encoding: fileEncoding
   })
 }
