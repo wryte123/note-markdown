@@ -12,7 +12,7 @@ export const NewNoteButton = ({ ...props }: ActionButtonProps) => {
 
   return (
     <ActionButton onClick={handleCreateNote} {...props}>
-      <LuFilePen className="w-4 h-4 text-zinc-300" />
+      <LuFilePen className="w-4 h-4" />
     </ActionButton>
   )
 }
