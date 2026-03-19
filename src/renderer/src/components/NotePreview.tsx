@@ -21,8 +21,8 @@ export const NotePreview = ({
       className={cn(
         'cursor-pointer px-2.5 py-3 rounded-md transition-colors duration-75',
         {
-          'bg-zinc-400/75': isActive,
-          'hover:bg-zinc-500/25': !isActive
+          'bg-blue-100': isActive,
+          'hover:bg-gray-100': !isActive
         },
         className
       )}

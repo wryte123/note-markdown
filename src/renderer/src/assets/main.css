@@ -12,9 +12,9 @@
 
     @apply select-none;
 
-    @apply bg-transparent;
+    @apply bg-white;
 
-    @apply font-mono antialiased text-white;
+    @apply antialiased text-gray-900;
 
     @apply overflow-hidden;
   }
@@ -32,7 +32,7 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-[#555] rounded-md;
+    @apply bg-gray-400 rounded-md;
   }
 
   ::-webkit-scrollbar-track {

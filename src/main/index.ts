@@ -18,13 +18,12 @@ function createWindow(): void {
     ...(process.platform === 'linux' ? { icon } : {}),
     center: true,
     title: 'Markdown 笔记',
+    backgroundColor: '#ffffff',
     // macOS: hidden title bar with traffic lights; Windows/Linux: show frame with controls
     ...(isMac
       ? {
           frame: false,
-          vibrancy: 'under-window',
-          visualEffectState: 'active',
-          titleBarStyle: 'hidden',
+          titleBarStyle: 'hiddenInset',
           trafficLightPosition: { x: 15, y: 10 }
         }
       : {
@@ -66,7 +65,7 @@ protocol.registerSchemesAsPrivileged([
 app.whenReady().then(() => {
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
-  nativeTheme.themeSource = 'dark'
+  nativeTheme.themeSource = 'light'
 
   // Register notemark:// protocol handler to serve local images
   protocol.handle('notemark', (req) => {
